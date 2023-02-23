@@ -17,4 +17,4 @@ app.use("/", adminRoute);
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
-// eurekaHelper.registerWithEureka("admin-service", port);
+eurekaHelper.registerWithEureka("admin-service", port);

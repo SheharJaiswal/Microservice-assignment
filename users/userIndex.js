@@ -13,4 +13,4 @@ app.use("/", userRoute);
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
-// eurekaHelper.registerWithEureka("user-service", port);
+eurekaHelper.registerWithEureka("user-service", port);

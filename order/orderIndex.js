@@ -18,4 +18,4 @@ app.use("/", orderRoute);
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
-// eurekaHelper.registerWithEureka("order-service", port);
+eurekaHelper.registerWithEureka("order-service", port);

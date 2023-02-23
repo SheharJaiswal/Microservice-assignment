@@ -47,4 +47,4 @@ server.get("/outgateway", checkAuth, (req, res) => {
 server.start(port).then((server) => {
   console.log(`Api Gateaway is running 9000 port`);
 });
-// eurekaHelper.registerWithEureka("gateway-service", port);
+eurekaHelper.registerWithEureka("gateway-service", port);

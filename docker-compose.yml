@@ -41,9 +41,11 @@ services:
     build: ./users
     restart: always
     depends_on:
+      - service-registry
       - user-db
       - gateway-service
     environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=service-registry
       - HOSTNAME=user-service
       - PORT=8080
       - DB_URI=mongodb://user-db:27017/Microservices-users
@@ -58,9 +60,11 @@ services:
     ports:
       - 8081:8081
     depends_on:
+      - service-registry
       - order-db
       - gateway-service
     environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=service-registry
       - HOSTNAME=order-service
       - PORT=8081
       - DB_URI=mongodb://order-db:27017/Microservices-orders
@@ -77,13 +81,17 @@ services:
     depends_on:
       - product-db
       - gateway-service
+      - service-registry
     environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=service-registry
       - HOSTNAME=product-service
       - PORT=8082
       - DB_URI=mongodb://product-db:27017/Microservices-product
       - ADMIN_SECRET_KEY=jbcdiojldqskndINIRE
 
   admin-service:
+    depends_on:
+      - service-registry
     networks:
       - microapps
     container_name: admin-service_container
@@ -92,17 +100,21 @@ services:
     ports:
       - 8085:8085
     environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=service-registry
       - HOSTNAME=admin-service
       - PORT=8085
       - ADMIN_SECRET_KEY=jbcdiojldqskndINIRE
 
   gateway-service:
+    depends_on:
+      - service-registry
     container_name: gateway-service_container
     build: ./apiGateway
     restart: always
     ports:
       - 9001:9001
     environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=service-registry
       - HOSTNAME=gateway-service
       - PORT=9001
       - SECRET_KEY=NCJNSJXXDKSDD
@@ -110,6 +122,13 @@ services:
       - HOSTNAME_2=order-service
       - HOSTNAME_3=product-service
       - HOSTNAME_4=admin-service
+    networks:
+      - microapps
+
+  service-registry:
+    image: steeltoeoss/eureka-server
+    ports:
+      - 8761:8761
     networks:
       - microapps
 
